@@ -53,7 +53,6 @@ cat >> /etc/sing-box/keep.sh <<EOF
 progress1="sing-box"
 cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run"
 
-
 # 定义编号列表
 progress_list="1"
 
@@ -79,10 +78,10 @@ for i in $progress_list; do
 
     if [ "$status" = 1 ]; then
         echo "starting $progress"
+        # 直接使用字符串命令后台运行
         $cmd > /dev/null 2>&1 &
 
-        # 启动后检测进程是否启动成功
-        sleep 1  # 等待进程启动,视情况调整秒数
+        sleep 2 # 等待程序启动
         if pgrep "$progress" > /dev/null 2>&1; then
             echo "$progress is running"
         else
