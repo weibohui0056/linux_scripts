@@ -2,10 +2,10 @@
 
 ## 开启BBR
 ```bash
-curl -fsSL https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/open_bbr.sh | bash
+bash <(wget -qO- https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/open_bbr.sh)
 ```
 
 ## sing-box(vless_ws_cf)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box.sh | bash
+bash <(wget -qO- https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box.sh)
 ```
