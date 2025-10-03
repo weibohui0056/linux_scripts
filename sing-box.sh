@@ -46,7 +46,7 @@ EOF
 /usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run > /dev/null 2>&1 &
 
 # 生成保活脚本
-cat >> /etc/sing-box/keep.sh <<EOF
+cat > /etc/sing-box/keep.sh <<'EOF'
 #!/bin/bash
 
 # 守护进程名和启动命令
@@ -78,10 +78,9 @@ for i in $progress_list; do
 
     if [ "$status" = 1 ]; then
         echo "starting $progress"
-        # 直接使用字符串命令后台运行
         $cmd > /dev/null 2>&1 &
 
-        sleep 2 # 等待程序启动
+        sleep 2
         if pgrep "$progress" > /dev/null 2>&1; then
             echo "$progress is running"
         else
