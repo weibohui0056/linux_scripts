@@ -6,6 +6,6 @@ curl -fsSL https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/hea
 ```
 
 ## sing-box
-'''bash
+```bash
 curl -fsSL https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box.sh | bash
-'''
+```
