@@ -15,6 +15,7 @@ mv sing-box-1.12.0-linux-amd64/sing-box /usr/local/bin
 chmod +x /usr/local/bin/sing-box
 rm -rf sing-box-1.12.0-linux-amd64
 rm -f sing-box-1.12.0-linux-amd64.tar.gz
+rm -f /etc/sing-box/keep.sh
 
 # 生成服务端配置文件
 mkdir /etc/sing-box
@@ -46,7 +47,7 @@ nohup /usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run > 
 
 # 生成保活脚本
 cat >> /etc/sing-box/keep.sh <<EOF
-#!/bin/sh
+#!/bin/bash
 
 # 守护进程名和启动命令
 progress1="sing-box"
@@ -90,6 +91,7 @@ for i in $progress_list; do
     fi
 done
 EOF
+chmod +x /etc/sing-box/keep.sh
 
 # 添加计划任务
 (sudo crontab -l 2>/dev/null; echo "0 * * * * /etc/sing-box/keep.sh") | sudo crontab -
