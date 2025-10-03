@@ -5,7 +5,7 @@ rm -rf sing-box-1.12.0-linux-amd64
 rm -f sing-box-1.12.0-linux-amd64.tar.gz
 rm -f /usr/local/bin/sing-box
 rm -rf /etc/sing-box
-sudo crontab -l | grep -v '/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run' | sudo crontab -
+sudo crontab -l | grep -v 'sing-box' | sudo crontab -
 pkill sing-box
 
 # 下载 sing-box
@@ -92,7 +92,7 @@ done
 EOF
 
 # 添加计划任务
-(sudo crontab -l 2>/dev/null; echo "0 * * * * /usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run") | sudo crontab -
+(sudo crontab -l 2>/dev/null; echo "0 * * * * /etc/sing-box/keep.sh") | sudo crontab -
 
 # 生成客户端出站配置
 echo "回源端口:$PORT"
