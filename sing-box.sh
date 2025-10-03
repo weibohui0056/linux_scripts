@@ -1,0 +1,120 @@
+#!/bin/sh
+
+# 清理之前安装
+rm -rf sing-box-1.12.0-linux-amd64
+rm -f sing-box-1.12.0-linux-amd64.tar.gz
+rm -f /usr/local/bin/sing-box
+rm -rf /etc/sing-box
+sudo crontab -l | grep -v '/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run' | sudo crontab -
+pkill sing-box
+
+# 下载 sing-box
+wget https://v6.gh-proxy.com/https://github.com/SagerNet/sing-box/releases/download/v1.12.0/sing-box-1.12.0-linux-amd64.tar.gz
+tar -zxvf sing-box-1.12.0-linux-amd64.tar.gz
+mv sing-box-1.12.0-linux-amd64/sing-box /usr/local/bin
+chmod +x /usr/local/bin/sing-box
+rm -rf sing-box-1.12.0-linux-amd64
+rm -f sing-box-1.12.0-linux-amd64.tar.gz
+
+# 生成服务端配置文件
+mkdir /etc/sing-box
+UUID=$(/usr/local/bin/sing-box generate uuid)
+PORT=$((60000 + $(od -An -N2 -i /dev/urandom) % 10000))
+cat >> /etc/sing-box/server_vless_ws_notls.json <<EOF
+{
+    "inbounds": [
+        {
+            "type": "vless",
+            "listen": "::",
+            "listen_port": $PORT,
+            "users": [
+              {
+                "uuid": "$UUID"
+                }
+              ],
+            "transport": {
+              "type": "ws",
+              "path": "/$UUID"
+            }
+        }
+    ]
+}
+EOF
+
+# 启动 sing-box
+nohup /usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run > /dev/null 2>&1 &
+
+# 生成保活脚本
+cat >> /etc/sing-box/keep.sh <<EOF
+#!/bin/sh
+
+# 守护进程名和启动命令
+progress1="sing-box"
+cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run"
+
+
+# 定义编号列表
+progress_list="1"
+
+# 检测所有进程,保存状态变量
+for i in $progress_list; do
+    eval "progress=\$progress$i"
+    eval "cmd=\$cmd$i"
+
+    if pgrep "$progress" > /dev/null 2>&1; then
+        echo "$progress is running"
+        eval "progress_status$i=0"
+    else
+        echo "$progress is not running"
+        eval "progress_status$i=1"
+    fi
+done
+
+# 根据状态变量启动未运行的进程
+for i in $progress_list; do
+    eval "status=\$progress_status$i"
+    eval "cmd=\$cmd$i"
+    eval "progress=\$progress$i"
+
+    if [ "$status" = 1 ]; then
+        echo "starting $progress"
+        nohup $cmd > /dev/null 2>&1 &
+
+        # 启动后检测进程是否启动成功
+        sleep 1  # 等待进程启动,视情况调整秒数
+        if pgrep "$progress" > /dev/null 2>&1; then
+            echo "$progress is running"
+        else
+            echo "failed to start $progress"
+        fi
+    fi
+done
+EOF
+
+# 添加计划任务
+(sudo crontab -l 2>/dev/null; echo "0 * * * * /usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run") | sudo crontab -
+
+# 生成客户端出站配置
+echo "回源端口:$PORT"
+read -p "请输入CF解析的域名:" DOMAIN
+read -p "节点地区:" REGION
+cat <<EOF
+    {
+     "type": "vless",
+     "tag": "CF-VL-$REGION",
+     "server": "$DOMAIN",
+     "server_port": 443,
+     "uuid": "$UUID",
+     "tls": {
+       "enabled": true,
+       "server_name": "$DOMAIN",
+       },
+     "transport": {
+        "type": "ws",
+        "path": "/$UUID",
+        "headers": {"Host": "$DOMAIN"},
+        "early_data_header_name": "Sec-WebSocket-Protocol",
+        "max_early_data": 0
+        }
+    }
+EOF
