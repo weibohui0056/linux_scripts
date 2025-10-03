@@ -96,10 +96,8 @@ EOF
 
 # 生成客户端出站配置
 echo "回源端口:$PORT"
-echo "CF解析域名:"
-DOMAIN=$(cat /dev/tty)
-echo "节点地区:"
-REGION=$(cat /dev/tty)
+echo "CF解析域名:" DOMAIN=$(cat /dev/tty)
+echo "节点地区:" REGION=$(cat /dev/tty)
 cat <<EOF
     {
      "type": "vless",
