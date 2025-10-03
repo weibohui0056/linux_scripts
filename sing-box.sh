@@ -20,7 +20,7 @@ rm -f /etc/sing-box/keep.sh
 # 生成服务端配置文件
 mkdir /etc/sing-box
 UUID=$(/usr/local/bin/sing-box generate uuid)
-PORT=$((60000 + $(od -An -N2 -i /dev/urandom) % 10000))
+PORT=$((60000 + $(od -An -N2 -i /dev/urandom) % 5536))
 cat >> /etc/sing-box/server_vless_ws_notls.json <<EOF
 {
     "inbounds": [
