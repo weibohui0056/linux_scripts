@@ -6,7 +6,7 @@ KERNEL_MAJOR=$(echo $KERNEL | cut -d. -f1)
 KERNEL_MINOR=$(echo $KERNEL | cut -d. -f2)
 
 if [ "$KERNEL_MAJOR" -lt 4 ] || { [ "$KERNEL_MAJOR" -eq 4 ] && [ "$KERNEL_MINOR" -lt 9 ]; }; then
-    echo "内核版本过低，BBR 需要 >= 4.9 内核。当前内核：$KERNEL"
+    echo "你该升级系统啦!!!"
     exit 1
 fi
 
@@ -22,4 +22,5 @@ fi
 sudo sysctl -p
 
 # 输出当前 TCP 拥塞控制算法
-sysctl -n net.ipv4.tcp_congestion_control
+TCP_CONTROL=$(sysctl -n net.ipv4.tcp_congestion_control)
+echo "$TCP_CONTROL"
