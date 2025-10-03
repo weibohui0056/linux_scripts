@@ -21,7 +21,7 @@ rm -f /etc/sing-box/keep.sh
 mkdir /etc/sing-box
 UUID=$(/usr/local/bin/sing-box generate uuid)
 PORT=$((60000 + $(od -An -N2 -i /dev/urandom) % 5536))
-cat >> /etc/sing-box/server_vless_ws_notls.json <<EOF
+cat > /etc/sing-box/server_vless_ws_notls.json <<EOF
 {
     "inbounds": [
         {
