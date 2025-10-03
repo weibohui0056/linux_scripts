@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # 清理之前安装
 rm -rf sing-box-1.12.0-linux-amd64

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # 检查内核版本
 KERNEL=$(uname -r | awk -F- '{print $1}')
