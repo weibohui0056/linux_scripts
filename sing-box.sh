@@ -55,7 +55,7 @@ cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run"
 
 
 # 定义编号列表
-progress_list="1"
+progress_list="1 2"
 
 # 检测所有进程,保存状态变量
 for i in $progress_list; do
