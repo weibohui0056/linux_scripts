@@ -19,11 +19,13 @@ rm -f /etc/sing-box/keep.sh
 
 # 生成服务端配置文件
 mkdir /etc/sing-box
+## UUID
 read -p "UUID:" UUID
 if ! [[ "$UUID" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$ ]]; then
     UUID=$(/usr/local/bin/sing-box generate uuid)
     echo "UUID(自动生成):$UUID"
 fi
+## PORT
 read -p "PORT:" PORT
 if ! ([[ "$PORT" =~ ^[0-9]+$ ]] && [ "$PORT" -ge 0 ] && [ "$PORT" -le 65535 ]); then
     PORT=$((60000 + $(od -An -N2 -i /dev/urandom) % 5536))
