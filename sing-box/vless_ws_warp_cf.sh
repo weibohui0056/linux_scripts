@@ -21,7 +21,7 @@ rm -f /etc/sing-box/keep.sh
 mkdir /etc/sing-box
 UUID=$(/usr/local/bin/sing-box generate uuid)
 PORT=$((60000 + $(od -An -N2 -i /dev/urandom) % 5536))
-cat > /etc/sing-box/server_vless_ws_notls.json <<EOF
+cat > /etc/sing-box/server_vless_ws_warp_notls.json <<EOF
 {
     "inbounds": [
         {
@@ -62,7 +62,7 @@ cat > /etc/sing-box/server_vless_ws_notls.json <<EOF
 EOF
 
 # 启动 sing-box
-/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run > /dev/null 2>&1 &
+/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_warp_notls.json run > /dev/null 2>&1 &
 
 # 生成保活脚本
 cat > /etc/sing-box/keep.sh <<'EOF'
@@ -70,7 +70,7 @@ cat > /etc/sing-box/keep.sh <<'EOF'
 
 # 守护进程名和启动命令
 progress1="sing-box"
-cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run"
+cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_warp_notls.json run"
 
 
 # 定义编号列表
@@ -113,6 +113,7 @@ EOF
 chmod +x /etc/sing-box/keep.sh
 
 # 添加计划任务
+(sudo crontab -l 2>/dev/null; echo "@reboot /etc/sing-box/keep.sh") | sudo crontab -
 (sudo crontab -l 2>/dev/null; echo "0 * * * * /etc/sing-box/keep.sh") | sudo crontab -
 
 # 生成客户端出站配置
