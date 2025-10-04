@@ -25,7 +25,7 @@ if ! [[ "$UUID" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0
     echo "UUID(自动生成):$UUID"
 fi
 read -p "PORT:" PORT
-if ! [[ "$PORT" =~ ^[0-9]+$ ]] || [ "$PORT" -lt 0 ] || [ "$PORT" -gt 65535 ]; then
+if ! ([[ "$PORT" =~ ^[0-9]+$ ]] && [ "$PORT" -ge 0 ] && [ "$PORT" -le 65535 ]); then
     PORT=$((60000 + $(od -An -N2 -i /dev/urandom) % 5536))
     echo "PORT(自动生成):$PORT"
 fi
