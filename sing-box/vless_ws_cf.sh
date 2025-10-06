@@ -48,26 +48,7 @@ cat > /etc/sing-box/server_vless_ws_notls.json <<EOF
               "path": "/$UUID"
             }
         }
-    ],
-    "endpoints": [
-        {
-            "type": "wireguard",
-            "tag": "warp",
-            "address": "172.16.0.2/32",
-            "private_key": "uJaFlAvGYFdpE1Y/Iyvd1Ct3rSVvfR+rFCxwWE88D08=",
-            "peers": [
-               {
-                 "address": "[2606:4700:d0::a29f:c001]",
-                 "port": 2408,
-                 "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-                 "allowed_ips": "0.0.0.0/0"
-               }
-            ]
-        }
-    ],
-    "route": {
-       "final": "warp"
-    }
+    ]
 }
 EOF
 
