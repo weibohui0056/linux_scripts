@@ -15,7 +15,6 @@ mv sing-box-1.12.0-linux-amd64/sing-box /usr/local/bin
 chmod +x /usr/local/bin/sing-box
 rm -rf sing-box-1.12.0-linux-amd64
 rm -f sing-box-1.12.0-linux-amd64.tar.gz
-rm -f /etc/sing-box/keep.sh
 
 # 生成服务端配置文件
 mkdir /etc/sing-box
@@ -53,7 +52,7 @@ cat > /etc/sing-box/server_vless_ws_cf.json <<EOF
 EOF
 
 # 启动 sing-box
-/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run > /dev/null 2>&1 &
+/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf.json run > /dev/null 2>&1 &
 
 # 生成保活脚本
 cat > /etc/sing-box/keep.sh <<'EOF'
@@ -61,7 +60,7 @@ cat > /etc/sing-box/keep.sh <<'EOF'
 
 # 守护进程名和启动命令
 progress1="sing-box"
-cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_notls.json run"
+cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf.json run"
 
 
 # 定义编号列表
