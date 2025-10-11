@@ -31,7 +31,7 @@ if ! ([[ "$PORT" =~ ^[0-9]+$ ]] && [ "$PORT" -ge 0 ] && [ "$PORT" -le 65535 ]); 
     PORT=$((60000 + $(od -An -N2 -i /dev/urandom) % 5536))
     echo "PORT(自动生成):$PORT"
 fi
-cat > /etc/sing-box/server_vless_ws_warp_notls.json <<EOF
+cat > /etc/sing-box/server_vless_ws_warp_cf.json <<EOF
 {
     "inbounds": [
         {
