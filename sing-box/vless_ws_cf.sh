@@ -9,7 +9,7 @@ sudo crontab -l | grep -v 'sing-box' | sudo crontab -
 pkill sing-box
 
 # 下载 sing-box
-wget https://v6.gh-proxy.com/https://github.com/SagerNet/sing-box/releases/download/v1.12.0/sing-box-1.12.0-linux-amd64.tar.gz
+wget https://github.com/SagerNet/sing-box/releases/download/v1.12.0/sing-box-1.12.0-linux-amd64.tar.gz
 tar -zxvf sing-box-1.12.0-linux-amd64.tar.gz
 mv sing-box-1.12.0-linux-amd64/sing-box /usr/local/bin
 chmod +x /usr/local/bin/sing-box
