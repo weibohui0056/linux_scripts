@@ -52,11 +52,12 @@ cat > /etc/sing-box/server_vless_ws_warp_cf.json <<EOF
         {
             "type": "wireguard",
             "tag": "warp",
+            "mtu": 1280,
             "address": "172.16.0.2/32",
             "private_key": "uJaFlAvGYFdpE1Y/Iyvd1Ct3rSVvfR+rFCxwWE88D08=",
             "peers": [
                {
-                 "address": "[2606:4700:d0::a29f:c001]",
+                 "address": "engage.cloudflareclient.com",
                  "port": 2408,
                  "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
                  "allowed_ips": "0.0.0.0/0"
