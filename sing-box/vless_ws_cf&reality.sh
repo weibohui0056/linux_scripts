@@ -9,7 +9,7 @@ sudo crontab -l | grep -v 'sing-box' | sudo crontab -
 pkill sing-box
 
 # 下载 sing-box
-wget https://v6.gh-proxy.com/https://github.com/SagerNet/sing-box/releases/download/v1.12.0/sing-box-1.12.0-linux-amd64.tar.gz
+wget https://github.com/SagerNet/sing-box/releases/download/v1.12.0/sing-box-1.12.0-linux-amd64.tar.gz
 tar -zxvf sing-box-1.12.0-linux-amd64.tar.gz
 mv sing-box-1.12.0-linux-amd64/sing-box /usr/local/bin
 chmod +x /usr/local/bin/sing-box
@@ -22,15 +22,15 @@ mkdir /etc/sing-box
 read -p "uuid:" uuid
 if ! [[ "$uuid" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$ ]]; then
     uuid=$(/usr/local/bin/sing-box generate uuid)
-    echo "uuid(自动生成):$uuid"
+    echo "UUID(自动生成):$uuid"
 fi
 ## port
 read -p "port:" port
 if ! ([[ "$port" =~ ^[0-9]+$ ]] && [ "$port" -ge 0 ] && [ "$port" -le 65535 ]); then
     port=$((60000 + $(od -An -N2 -i /dev/urandom) % 5536))
-    echo "port(自动生成):$port"
+    echo "PORT(自动生成):$port"
 fi
-cat > /etc/sing-box/server_vless_ws_warp_cf.json <<EOF
+cat > /etc/sing-box/server_vless_ws_cf.json <<EOF
 {
     "inbounds": [
         {
@@ -46,33 +46,37 @@ cat > /etc/sing-box/server_vless_ws_warp_cf.json <<EOF
               "type": "ws",
               "path": "/$uuid"
             }
-        }
-    ],
-    "endpoints": [
+        },
         {
-            "type": "wireguard",
-            "tag": "warp",
-            "mtu": 1280,
-            "address": "172.16.0.2/32",
-            "private_key": "uJaFlAvGYFdpE1Y/Iyvd1Ct3rSVvfR+rFCxwWE88D08=",
-            "peers": [
-               {
-                 "address": "[2606:4700:d0::a29f:c001]",
-                 "port": 2408,
-                 "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-                 "allowed_ips": "0.0.0.0/0"
-               }
-            ]
+            "type": "vless",
+            "listen": "::",
+            "listen_port": $port,
+            "users": [
+              {
+                "uuid": "$uuid",
+                "flow": "xtls-rprx-vision"
+                }
+              ],
+            "tls": {
+                "enabled": true,
+                "server_name": "www.amazon.com",
+                "reality": {
+                    "enabled": true,
+                    "handshake": {
+                        "server": "www.amazon.com",
+                        "server_port": 443
+                    },
+                "private_key": "$private_key",
+                "short_id": ""
+                }
+            }
         }
-    ],
-    "route": {
-       "final": "warp"
-    }
+    ]
 }
 EOF
 
 # 启动 sing-box
-/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_warp_cf.json run > /dev/null 2>&1 &
+/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf.json run > /dev/null 2>&1 &
 
 # 生成保活脚本
 cat > /etc/sing-box/keep.sh <<'EOF'
@@ -80,7 +84,7 @@ cat > /etc/sing-box/keep.sh <<'EOF'
 
 # 守护进程名和启动命令
 progress1="sing-box"
-cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_warp_cf.json run"
+cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf.json run"
 
 
 # 定义编号列表
@@ -128,6 +132,7 @@ chmod +x /etc/sing-box/keep.sh
 
 # 生成客户端出站配置
 read -p "CF解析域名:" domain
+read -p "IP:" ip
 read -p "地区:" region
 cat <<EOF
     {
@@ -147,5 +152,26 @@ cat <<EOF
         "early_data_header_name": "Sec-WebSocket-Protocol",
         "max_early_data": 0
         }
+    },
+    {
+     "type": "vless",
+     "tag": "VL-REALITY-$region",
+     "server": "$ip",
+     "server_port": $port,
+     "uuid": "$uuid",
+     "flow": "xtls-rprx-vision",
+     "tls": {
+       "enabled": true,
+       "server_name": "www.amazon.com",
+       "reality": {
+         "enabled": true,
+         "public_key": "$public_key",
+         "short_id": ""
+       },
+       "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      }
     }
 EOF
