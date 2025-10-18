@@ -59,7 +59,7 @@ cat > /etc/sing-box/server_vless_ws_cf_and_reality.json <<EOF
         {
             "type": "vless",
             "listen": "::",
-            "listen_port": $port,
+            "listen_port": $vless_reality_port,
             "users": [
               {
                 "uuid": "$uuid",
