@@ -39,7 +39,7 @@ fi
 key=$(/usr/local/bin/sing-box generate reality-keypair)
 private_key=$(echo "$key" | grep "PrivateKey:" | awk '{print $2}')
 public_key=$(echo "$key" | grep "PublicKey:" | awk '{print $2}')
-cat > /etc/sing-box/server_vless_ws_cf&reality.json <<EOF
+cat > /etc/sing-box/server_vless_ws_cf_and_reality.json <<EOF
 {
     "inbounds": [
         {
@@ -85,7 +85,7 @@ cat > /etc/sing-box/server_vless_ws_cf&reality.json <<EOF
 EOF
 
 # 启动 sing-box
-/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf&reality.json run > /dev/null 2>&1 &
+/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf\reality.json run > /dev/null 2>&1 &
 
 # 生成保活脚本
 cat > /etc/sing-box/keep.sh <<'EOF'
@@ -93,7 +93,7 @@ cat > /etc/sing-box/keep.sh <<'EOF'
 
 # 守护进程名和启动命令
 progress1="sing-box"
-cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf&reality.json run"
+cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf\reality.json run"
 
 
 # 定义编号列表

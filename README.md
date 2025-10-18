@@ -19,5 +19,5 @@ bash <(wget -qO- "https://raw.githubusercontent.com/weibohui0056/linux_scripts/r
 ```
 ## vless_ws_cf&reality
 ```
-bash <(wget -qO- "https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/vless_ws_cf&reality.sh")
+bash <(wget -qO- "https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/vless_ws_cf_and_reality.sh")
 ```
