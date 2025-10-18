@@ -35,7 +35,7 @@ if ! ([[ "$vless_reality_port" =~ ^[0-9]+$ ]] && [ "$vless_reality_port" -ge 0 ]
     vless_reality_port=$((50000 + $(od -An -N2 -i /dev/urandom) % 9999))
     echo "VLESS_REALITY_PORT(自动生成):$vless_reality_port"
 fi
-cat > /etc/sing-box/server_vless_ws_cf.json <<EOF
+cat > /etc/sing-box/server_vless_ws_cf&reality.json <<EOF
 {
     "inbounds": [
         {
@@ -81,7 +81,7 @@ cat > /etc/sing-box/server_vless_ws_cf.json <<EOF
 EOF
 
 # 启动 sing-box
-/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf.json run > /dev/null 2>&1 &
+/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf&reality.json run > /dev/null 2>&1 &
 
 # 生成保活脚本
 cat > /etc/sing-box/keep.sh <<'EOF'
@@ -89,7 +89,7 @@ cat > /etc/sing-box/keep.sh <<'EOF'
 
 # 守护进程名和启动命令
 progress1="sing-box"
-cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf.json run"
+cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf&reality.json run"
 
 
 # 定义编号列表
