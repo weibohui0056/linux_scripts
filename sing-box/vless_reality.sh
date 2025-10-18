@@ -19,19 +19,18 @@ rm -f sing-box-1.12.0-linux-amd64.tar.gz
 # 生成服务端配置文件
 mkdir /etc/sing-box
 ## uuid
-read -p "uuid:" uuid
+read -p "UUID:" uuid
 if ! [[ "$uuid" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$ ]]; then
     uuid=$(/usr/local/bin/sing-box generate uuid)
     echo "UUID(自动生成):$uuid"
 fi
 ## port
-read -p "port:" port
+read -p "PORT:" port
 if ! ([[ "$port" =~ ^[0-9]+$ ]] && [ "$port" -ge 0 ] && [ "$port" -le 65535 ]); then
     port=$((60000 + $(od -An -N2 -i /dev/urandom) % 5536))
     echo "PORT(自动生成):$port"
 fi
-
-## KEY
+## key
 key=$(/usr/local/bin/sing-box generate reality-keypair)
 private_key=$(echo "$key" | grep "PrivateKey:" | awk '{print $2}')
 public_key=$(echo "$key" | grep "PublicKey:" | awk '{print $2}')
