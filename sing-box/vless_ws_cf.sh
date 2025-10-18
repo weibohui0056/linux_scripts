@@ -40,8 +40,8 @@ cat > /etc/sing-box/server_vless_ws_cf.json <<EOF
             "users": [
               {
                 "uuid": "$UUID"
-                }
-              ],
+              }
+            ],
             "transport": {
               "type": "ws",
               "path": "/$UUID"
