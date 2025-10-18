@@ -13,3 +13,11 @@ bash <(wget -qO- https://raw.githubusercontent.com/weibohui0056/linux_scripts/re
 ```
 bash <(wget -qO- https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/vless_ws_warp_cf.sh)
 ```
+## vless_reality
+```
+bash <(wget -qO- https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/vless_reality.sh)
+```
+## vless_ws_cf&reality
+```
+bash <(wget -qO- https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/vless_ws_cf&reality.sh)
+```
