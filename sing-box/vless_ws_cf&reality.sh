@@ -35,6 +35,10 @@ if ! ([[ "$vless_reality_port" =~ ^[0-9]+$ ]] && [ "$vless_reality_port" -ge 0 ]
     vless_reality_port=$((50000 + $(od -An -N2 -i /dev/urandom) % 9999))
     echo "VLESS_REALITY_PORT(自动生成):$vless_reality_port"
 fi
+## key
+key=$(/usr/local/bin/sing-box generate reality-keypair)
+private_key=$(echo "$key" | grep "PrivateKey:" | awk '{print $2}')
+public_key=$(echo "$key" | grep "PublicKey:" | awk '{print $2}')
 cat > /etc/sing-box/server_vless_ws_cf&reality.json <<EOF
 {
     "inbounds": [
