@@ -16,51 +16,13 @@ chmod +x /usr/local/bin/sing-box
 rm -rf sing-box-1.12.0-linux-amd64
 rm -f sing-box-1.12.0-linux-amd64.tar.gz
 
-# 生成服务端配置文件
-mkdir /etc/sing-box
-## uuid
-read -p "UUID:" uuid
-if ! [[ "$uuid" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$ ]]; then
-    uuid=$(/usr/local/bin/sing-box generate uuid)
-    echo "UUID(自动生成):$uuid"
-fi
-## port
-read -p "PORT:" port
-if ! ([[ "$port" =~ ^[0-9]+$ ]] && [ "$port" -ge 0 ] && [ "$port" -le 65535 ]); then
-    port=$((60000 + $(od -An -N2 -i /dev/urandom) % 5536))
-    echo "PORT(自动生成):$port"
-fi
-cat > /etc/sing-box/server_vless_ws_cf.json <<EOF
-{
-    "inbounds": [
-        {
-            "type": "vless",
-            "listen": "::",
-            "listen_port": $port,
-            "users": [
-              {
-                "uuid": "$uuid"
-              }
-            ],
-            "transport": {
-              "type": "ws",
-              "path": "/$uuid"
-            }
-        }
-    ]
-}
-EOF
-
-# 启动 sing-box
-/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf.json run > /dev/null 2>&1 &
-
 # 生成保活脚本
 cat > /etc/sing-box/keep.sh <<'EOF'
 #!/bin/bash
 
 # 守护进程名和启动命令
 progress1="sing-box"
-cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server_vless_ws_cf.json run"
+cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server.json run"
 
 
 # 定义编号列表
@@ -105,27 +67,3 @@ chmod +x /etc/sing-box/keep.sh
 # 添加计划任务
 (sudo crontab -l 2>/dev/null; echo "@reboot /etc/sing-box/keep.sh") | sudo crontab -
 (sudo crontab -l 2>/dev/null; echo "0 * * * * /etc/sing-box/keep.sh") | sudo crontab -
-
-# 生成客户端出站配置
-read -p "CF解析域名:" domain
-read -p "地区:" region
-cat <<EOF
-    {
-     "type": "vless",
-     "tag": "CF-VL-$region",
-     "server": "$domain",
-     "server_port": 443,
-     "uuid": "$uuid",
-     "tls": {
-       "enabled": true,
-       "server_name": "$domain",
-       },
-     "transport": {
-        "type": "ws",
-        "path": "/$uuid",
-        "headers": {"Host": "$domain"},
-        "early_data_header_name": "Sec-WebSocket-Protocol",
-        "max_early_data": 0
-        }
-    }
-EOF

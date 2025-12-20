@@ -5,19 +5,11 @@ bash <(wget -qO- https://raw.githubusercontent.com/weibohui0056/linux_scripts/re
 
 # sing-box
 
-## vless_ws_cf
+## install
 ```
-bash <(wget -qO- "https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/vless_ws_cf.sh")
+bash <(wget -qO- "https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/install.sh")
 ```
-## vless_ws_warp_cf
+## uninstall
 ```
-bash <(wget -qO- "https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/vless_ws_warp_cf.sh")
-```
-## vless_reality
-```
-bash <(wget -qO- "https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/vless_reality.sh")
-```
-## vless_ws_cf&reality
-```
-bash <(wget -qO- "https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/vless_ws_cf_and_reality.sh")
+bash <(wget -qO- "https://raw.githubusercontent.com/weibohui0056/linux_scripts/refs/heads/main/sing-box/uninstall.sh")
 ```
