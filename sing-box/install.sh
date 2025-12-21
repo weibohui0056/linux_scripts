@@ -23,7 +23,7 @@ cat > /etc/sing-box/keep.sh <<'EOF'
 
 # 守护进程名和启动命令
 progress1="sing-box"
-cmd1="/usr/local/bin/sing-box -c /etc/sing-box/server.json run"
+cmd1="/usr/local/bin/sing-box -c /etc/sing-box/config.json run"
 
 
 # 定义编号列表
