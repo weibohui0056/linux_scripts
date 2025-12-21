@@ -1,20 +1,20 @@
 #!/bin/bash
 
 # 清理之前安装
-rm -rf sing-box-1.12.0-linux-amd64
-rm -f sing-box-1.12.0-linux-amd64.tar.gz
+rm -rf sing-box-1.12.13-linux-amd64
+rm -f sing-box-1.12.13-linux-amd64.tar.gz
 rm -f /usr/local/bin/sing-box
 rm -rf /etc/sing-box
 sudo crontab -l | grep -v 'sing-box' | sudo crontab -
 pkill sing-box
 
 # 下载 sing-box
-wget https://github.com/SagerNet/sing-box/releases/download/v1.12.0/sing-box-1.12.0-linux-amd64.tar.gz
-tar -zxvf sing-box-1.12.0-linux-amd64.tar.gz
-mv sing-box-1.12.0-linux-amd64/sing-box /usr/local/bin
+wget https://github.com/SagerNet/sing-box/releases/download/v1.12.13/sing-box-1.12.13-linux-amd64.tar.gz
+tar -zxvf sing-box-1.12.13-linux-amd64.tar.gz
+mv sing-box-1.12.13-linux-amd64/sing-box /usr/local/bin
 chmod +x /usr/local/bin/sing-box
-rm -rf sing-box-1.12.0-linux-amd64
-rm -f sing-box-1.12.0-linux-amd64.tar.gz
+rm -rf sing-box-1.12.13-linux-amd64
+rm -f sing-box-1.12.13-linux-amd64.tar.gz
 
 # 生成保活脚本
 mkdir /etc/sing-box
