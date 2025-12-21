@@ -17,6 +17,7 @@ rm -rf sing-box-1.12.0-linux-amd64
 rm -f sing-box-1.12.0-linux-amd64.tar.gz
 
 # 生成保活脚本
+mkdir /etc/sing-box
 cat > /etc/sing-box/keep.sh <<'EOF'
 #!/bin/bash
 
